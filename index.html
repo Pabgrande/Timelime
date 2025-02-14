@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Línea de Tiempo (Proporcional + Avanzada)</title>
+  <title>Línea de Tiempo (Proporcional Avanzada)</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -13,11 +13,11 @@
   <!-- Babel para usar JSX en el navegador -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- React Icons (UMD) -->
+  <!-- React Icons (UMD) para iconos de flecha -->
   <script src="https://unpkg.com/react-icons@4.9.0/umd/react-icons.production.min.js"></script>
 
   <style>
-    /* Para que los tooltips no se corten si exceden el contenedor */
+    /* Para evitar que los tooltips se corten si exceden el contenedor */
     body {
       overflow-x: hidden;
     }
@@ -28,34 +28,44 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    // -----------------------------------------------------------------------------------
-    // CONFIGURACIÓN REACT Y REACT ICONS
-    // -----------------------------------------------------------------------------------
+
+    // -----------------------------------------------------------
+    // 1. Ajustes de React y React Icons
+    // -----------------------------------------------------------
     const { useState, useMemo } = React;
-    // Asegurarnos de que ReactIcons exista y localizar el paquete "fa" (FontAwesome)
     const faIcons = (window.ReactIcons && (window.ReactIcons.fa || window.ReactIcons.Fa)) || {};
-    // Extraer iconos chevron (o mostrar '▲' / '▼' si fallan)
     const FaChevronDown = faIcons.FaChevronDown || (() => '▼');
     const FaChevronUp   = faIcons.FaChevronUp   || (() => '▲');
 
-    // -----------------------------------------------------------------------------------
-    // DATOS: EVENTOS DE DIFERENTES CIVILIZACIONES (más "otros")
-    // -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------
+    // 2. Lista de eventos (10+ por cada civilización)
+    // -----------------------------------------------------------
+
     const ALL_EVENTS = [
-      // ---------------------------------------------------------------------------------
-      // OTROS (ejemplos de civilizaciones fuera de Egipto, Grecia, Roma)
-      // ---------------------------------------------------------------------------------
+      // OTROS (10 eventos)
       {
         year: -2500,
         civilization: 'otros',
         event: 'Civilización del Valle del Indo',
-        description: 'Surgió en la región de Harappa y Mohenjo-Daro (actual Pakistán). Civilización del valle del Indo.'
+        description: 'Nace en la región de Harappa y Mohenjo-Daro (actual Pakistán).'
       },
       {
         year: -2070,
         civilization: 'otros',
         event: 'Dinastía Xia (China)',
-        description: 'Primer estado dinástico chino, según la tradición. Marca el comienzo de la historia de China.'
+        description: 'Según la tradición, primera dinastía de China. Marco inicial de la historia china.'
+      },
+      {
+        year: -1800,
+        civilization: 'otros',
+        event: 'Reinado de Hammurabi en Babilonia',
+        description: 'Código de Hammurabi, uno de los más antiguos sistemas legales conocidos.'
+      },
+      {
+        year: -1200,
+        civilization: 'otros',
+        event: 'Civilización Olmeca (Mesoamérica)',
+        description: 'Considerada la “cultura madre” de Mesoamérica. Monumentales cabezas colosales.'
       },
       {
         year: -550,
@@ -73,151 +83,187 @@
         year: 200,
         civilization: 'otros',
         event: 'Civilización Maya clásica',
-        description: 'Gran auge de las ciudades-Estado mayas en Mesoamérica (Tikal, Palenque, Copán, etc.).'
+        description: 'Auge de ciudades-Estado mayas en Tikal, Palenque, Copán, etc.'
+      },
+      {
+        year: 622,
+        civilization: 'otros',
+        event: 'Hégira (Islam)',
+        description: 'Mahoma huye de La Meca a Medina. Inicio del calendario islámico.'
+      },
+      {
+        year: 750,
+        civilization: 'otros',
+        event: 'Imperio Carolingio',
+        description: 'Pipino el Breve y luego Carlomagno forman la base de la Europa medieval.'
+      },
+      {
+        year: 1054,
+        civilization: 'otros',
+        event: 'Cisma de Oriente',
+        description: 'Separación de la Iglesia católica romana y la ortodoxa (Constantinopla).'
       },
 
-      // ---------------------------------------------------------------------------------
-      // EGIPCIA
-      // ---------------------------------------------------------------------------------
+      // EGIPCIA (10 eventos)
+      {
+        year: -3500,
+        civilization: 'egipcia',
+        event: 'Cultura Predinástica',
+        description: 'Aldeas a lo largo del Nilo, se desarrolla la cerámica y la unificación cultural.'
+      },
       {
         year: -3150,
         civilization: 'egipcia',
         event: 'Unificación del Alto y Bajo Egipto',
-        description: 'Narmer (Menes) unifica Egipto y establece la Primera Dinastía. Construcción de Menfis.'
+        description: 'Narmer (Menes) unifica Egipto y establece la Primera Dinastía.'
       },
       {
         year: -2686,
         civilization: 'egipcia',
         event: 'Inicio del Imperio Antiguo',
-        description: '“Edad de las Pirámides”. La pirámide escalonada de Djoser es un gran hito.'
+        description: '“Edad de las Pirámides”. Pirámide escalonada de Djoser (arquitecto Imhotep).'
       },
       {
         year: -2560,
         civilization: 'egipcia',
         event: 'Construcción de la Gran Pirámide',
-        description: 'El faraón Keops construye la Gran Pirámide de Guiza, una de las Siete Maravillas del Mundo Antiguo.'
+        description: 'El faraón Keops erige la Gran Pirámide de Guiza, Maravilla del Mundo Antiguo.'
+      },
+      {
+        year: -2181,
+        civilization: 'egipcia',
+        event: 'Primer Período Intermedio',
+        description: 'Debilidad del poder faraónico; disputas entre nomarcas y fragmentación del reino.'
+      },
+      {
+        year: -1750,
+        civilization: 'egipcia',
+        event: 'Imperio Medio',
+        description: 'Reunificación tras conflictos. Capital en Tebas (dinastías XI y XII).'
       },
       {
         year: -1550,
         civilization: 'egipcia',
         event: 'Imperio Nuevo',
-        description: 'Máxima expansión territorial. Faraones célebres como Ramsés II, Tutankamón y Hatshepsut.'
+        description: 'Máxima expansión con faraones como Hatshepsut, Tutmosis III, Ramsés II.'
       },
       {
         year: -1332,
         civilization: 'egipcia',
         event: 'Reinado de Tutankamón',
-        description: 'El “faraón niño”. Restauración del culto a Amón tras las reformas de Akenatón.'
+        description: 'El “faraón niño”. Restablece el culto a Amón tras la reforma de Akenatón.'
       },
       {
         year: -51,
         civilization: 'egipcia',
         event: 'Cleopatra VII',
-        description: 'Última faraona de Egipto. Relaciones con Julio César y Marco Antonio.'
+        description: 'Última gobernante helenística de Egipto. Alianzas con Julio César y Marco Antonio.'
       },
       {
         year: -30,
         civilization: 'egipcia',
         event: 'Fin del Egipto faraónico',
-        description: 'Muerte de Cleopatra VII. Egipto pasa a ser provincia romana.'
+        description: 'Muerte de Cleopatra VII. Egipto deviene provincia romana.'
       },
 
-      // ---------------------------------------------------------------------------------
-      // GRIEGA
-      // ---------------------------------------------------------------------------------
+      // GRIEGA (10 eventos)
       {
         year: -2000,
         civilization: 'griega',
         event: 'Civilización Minoica en Creta',
-        description: 'Palacios como el de Cnosos. Escritura lineal A. Gran influencia en el Mediterráneo.'
+        description: 'Palacios como el de Cnosos. Escritura lineal A. Gran influencia en el Egeo.'
       },
       {
         year: -1200,
         civilization: 'griega',
         event: 'Guerra de Troya (mítica)',
-        description: 'Conflicto entre aqueos y troyanos, narrado en la Ilíada de Homero.'
+        description: 'Conflicto narrado por Homero en la Ilíada, aqueos vs. troyanos.'
       },
       {
         year: -776,
         civilization: 'griega',
         event: 'Primeros Juegos Olímpicos',
-        description: 'Celebrados en Olimpia. Marcaban el calendario panhelénico.'
+        description: 'Celebrados en Olimpia. Referencia para el calendario panhelénico.'
       },
       {
         year: -508,
         civilization: 'griega',
         event: 'Democracia Ateniense',
-        description: 'Clístenes promulga reformas que dan origen a la democracia en Atenas.'
+        description: 'Clístenes instaura reformas que dan origen a la democracia en Atenas.'
       },
       {
         year: -490,
         civilization: 'griega',
         event: 'Guerras Médicas',
-        description: 'Batallas de Maratón y Termópilas. Conflicto Grecia vs. Imperio Persa.'
+        description: 'Persas vs. griegos. Batallas de Maratón, Termópilas, Salamina.'
+      },
+      {
+        year: -431,
+        civilization: 'griega',
+        event: 'Guerra del Peloponeso',
+        description: 'Confrontación entre Atenas y Esparta. Afecta a toda la Hélade.'
       },
       {
         year: -399,
         civilization: 'griega',
         event: 'Juicio y muerte de Sócrates',
-        description: 'Hito clave en la filosofía occidental. Platón narra su defensa en la “Apología”.'
+        description: 'Clave en la filosofía occidental. Platón narra su defensa en la “Apología”.'
       },
       {
         year: -336,
         civilization: 'griega',
         event: 'Alejandro Magno asciende al trono',
-        description: 'Conquista un gran imperio que llega a Egipto y la India. Difusión de la cultura helenística.'
+        description: 'Conquista un vasto imperio hasta Egipto y la India. Helenismo.'
       },
       {
         year: -323,
         civilization: 'griega',
         event: 'Muerte de Alejandro Magno',
-        description: 'El Imperio se divide en reinos helenísticos (Ptolemaico, Seléucida, etc.).'
+        description: 'El imperio se reparte en reinos helenísticos: Ptolomeos, Seléucidas...'
       },
       {
         year: -146,
         civilization: 'griega',
         event: 'Conquista Romana de Grecia',
-        description: 'Batalla de Corinto. Grecia pasa a ser provincia del Imperio Romano.'
+        description: 'Batalla de Corinto. Grecia pasa a formar parte del Imperio Romano.'
       },
 
-      // ---------------------------------------------------------------------------------
-      // ROMANA
-      // ---------------------------------------------------------------------------------
+      // ROMANA (11 eventos, está bien que sean más de 10)
       {
         year: -753,
         civilization: 'romana',
         event: 'Fundación de Roma',
-        description: 'Mito de Rómulo y Remo. Inicio del período monárquico.'
+        description: 'Mito de Rómulo y Remo. Inicio del periodo monárquico.'
       },
       {
         year: -509,
         civilization: 'romana',
         event: 'República Romana',
-        description: 'Expulsión de Tarquinio el Soberbio. Gobierno con Senado y cónsules.'
+        description: 'Expulsión del rey Tarquinio el Soberbio. Gobierno con Senado y cónsules.'
       },
       {
         year: -264,
         civilization: 'romana',
         event: 'Guerras Púnicas',
-        description: 'Conflictos con Cartago (Aníbal, Escipión). Roma domina el Mediterráneo occidental.'
+        description: 'Conflictos con Cartago (Aníbal, Escipión). Control del Mediterráneo.'
       },
       {
         year: -49,
         civilization: 'romana',
         event: 'Julio César cruza el Rubicón',
-        description: '“La suerte está echada”. Inicio de la guerra civil que transformará la República.'
+        description: '“Alea iacta est”. Comienza la guerra civil que transformará la República.'
       },
       {
         year: -44,
         civilization: 'romana',
         event: 'Asesinato de Julio César',
-        description: 'Conspiración de Bruto y Casio. Roma entra en un nuevo periodo de guerras civiles.'
+        description: 'Conspiración de Bruto y Casio. Roma se sume en otro periodo de guerras civiles.'
       },
       {
         year: -27,
         civilization: 'romana',
         event: 'Imperio Romano - Augusto',
-        description: 'Octavio se proclama Augusto. Comienza la etapa imperial y la Pax Romana.'
+        description: 'Octavio recibe el título de Augusto. Inicio de la etapa imperial y la Pax Romana.'
       },
       {
         year: 79,
@@ -229,33 +275,32 @@
         year: 117,
         civilization: 'romana',
         event: 'Máxima expansión con Trajano',
-        description: 'El Imperio se extiende desde Britania hasta Oriente Próximo.'
+        description: 'El Imperio se extiende desde Britania hasta Mesopotamia.'
       },
       {
         year: 313,
         civilization: 'romana',
         event: 'Edicto de Milán',
-        description: 'Constantino I legaliza el cristianismo, marcando un giro histórico en Roma.'
+        description: 'Constantino I legaliza el cristianismo. Gran cambio religioso en Roma.'
       },
       {
         year: 395,
         civilization: 'romana',
         event: 'División del Imperio',
-        description: 'Teodosio reparte Roma entre sus hijos (Arcadio en Oriente y Honorio en Occidente).'
+        description: 'Teodosio reparte Roma entre Arcadio (Oriente) y Honorio (Occidente).'
       },
       {
         year: 476,
         civilization: 'romana',
         event: 'Caída del Imperio Romano de Occidente',
-        description: 'Depuesto Rómulo Augústulo. Fin de la Antigüedad en Occidente.'
+        description: 'Destitución de Rómulo Augústulo. Fin de la Antigüedad en Occidente.'
       }
     ].sort((a, b) => a.year - b.year);
 
-    // -----------------------------------------------------------------------------------
-    // PERIODOS GRANDES (fondo de colores)
-    // Ejemplo: Edad Antigua (hasta 476), Edad Media (476-1492), etc.
-    // Puedes agregar Edad Moderna, Contemporánea, etc.
-    // -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------
+    // 3. Grandes períodos con fondo coloreado (ejemplo)
+    //    Puedes quitar o editar estos si deseas.
+    // -----------------------------------------------------------
     const PERIODS = [
       {
         label: "Edad Antigua",
@@ -268,21 +313,30 @@
         start: 476,
         end: 1492,
         colorClass: "bg-green-50"
+      },
+      {
+        label: "Edad Moderna",
+        start: 1492,
+        end: 1789,
+        colorClass: "bg-blue-50"
+      },
+      {
+        label: "Edad Contemporánea",
+        start: 1789,
+        end: 2100,
+        colorClass: "bg-yellow-50"
       }
     ];
 
-    // -----------------------------------------------------------------------------------
-    // COMPONENTE PRINCIPAL
-    // -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------
+    // 4. Componente principal: Timeline
+    // -----------------------------------------------------------
     function Timeline() {
-      // Civilización seleccionada
       const [selectedCiv, setSelectedCiv] = useState('all');
-      // Toggle a.C./d.C. vs BCE/CE
       const [useCommonEra, setUseCommonEra] = useState(false);
-      // Índice del evento expandido (para mostrar u ocultar descripción)
       const [expandedIndex, setExpandedIndex] = useState(null);
 
-      // Maneja la expansión
+      // Al hacer clic, expandir/contraer descripción
       const toggleExpand = (idx) => {
         setExpandedIndex((prev) => prev === idx ? null : idx);
       };
@@ -293,94 +347,79 @@
         return ALL_EVENTS.filter(ev => ev.civilization === selectedCiv);
       }, [selectedCiv]);
 
-      // Obtener minYear y maxYear del subconjunto filtrado
+      // Calcular años mínimo y máximo de los eventos filtrados
       const [minYear, maxYear] = useMemo(() => {
-        if (filteredEvents.length === 0) return [0, 1]; 
-        const first = filteredEvents[0].year;
-        const last = filteredEvents[filteredEvents.length - 1].year;
-        return [first, last];
+        if (filteredEvents.length === 0) return [0, 1];
+        return [
+          filteredEvents[0].year,
+          filteredEvents[filteredEvents.length - 1].year
+        ];
       }, [filteredEvents]);
 
-      // Calcular la altura total de la línea (en px) y una escala
-      // para que el rango [minYear..maxYear] quede dentro de ~2000 px
-      const totalRange = maxYear - minYear || 1; // evitar div 0
-      const baseHeight = 2000;                  // ajusta si quieres
-      const scale = baseHeight / totalRange;    // px por año
-      const timelineHeight = baseHeight + 200;  // un poquito más para márgenes
+      // Hacemos la línea muy larga para evitar solapamientos
+      const baseHeight = 20000; 
+      const totalRange = maxYear - minYear || 1;
+      const scale = baseHeight / totalRange; // px por año
+      const timelineHeight = baseHeight + 300; // algo extra de margen
 
-      // Función para convertir un "year" a la posición "top" en px
-      const getOffset = (year) => {
-        return (year - minYear) * scale + 100; 
-        // +100 => margen superior
-      };
+      // Convertir un año a coordenada 'top' en px
+      const getOffset = (year) => (year - minYear) * scale + 150; // +150 de margen superior
 
-      // Array con offsets para cada evento
-      // Alternamos entre izquierda y derecha
+      // Alternar izquierda/derecha
       const eventPositions = useMemo(() => {
-        return filteredEvents.map((ev, i) => {
-          return {
-            ...ev,
-            offsetTop: getOffset(ev.year),
-            side: (i % 2 === 0) ? 'left' : 'right'
-          };
-        });
+        return filteredEvents.map((ev, i) => ({
+          ...ev,
+          offsetTop: getOffset(ev.year),
+          side: (i % 2 === 0) ? 'left' : 'right'
+        }));
       }, [filteredEvents, scale]);
 
-      // Formatear año (a.C./d.C. o BCE/CE)
+      // Formato de año (a.C./d.C. o BCE/CE)
       const formatYear = (year) => {
         if (useCommonEra) {
-          // BCE/CE
           return year < 0 ? `${Math.abs(year)} BCE` : `${year} CE`;
         } else {
-          // a.C./d.C.
           return year < 0 ? `${Math.abs(year)} a.C.` : `${year} d.C.`;
         }
       };
 
-      // Colores por civilización
+      // Colores por civilización (para el punto central y la etiqueta)
       const colors = {
         egipcia: 'bg-yellow-600',
         griega: 'bg-blue-600',
         romana: 'bg-red-600',
         otros: 'bg-purple-600'
       };
+      const getColorClass = (civ) => colors[civ] || 'bg-gray-600';
 
-      // Obtener un color, o gris si no definido
-      const getColorClass = (civ) => {
-        return colors[civ] || 'bg-gray-600';
-      };
-
-      // Calcular posiciones de cada periodo (para fondo de color)
-      // Solo mostramos la parte del periodo que cae dentro del [minYear..maxYear]
+      // Calcular bloques de períodos
       const periodRects = useMemo(() => {
         return PERIODS.map((pd) => {
           // Recortar el intervalo al rango actual
           const startClamped = Math.max(pd.start, minYear);
           const endClamped = Math.min(pd.end, maxYear);
           if (startClamped >= endClamped) {
-            // No hay solapamiento con el rango de eventos
             return null;
           }
           const topPx = getOffset(startClamped);
           const bottomPx = getOffset(endClamped);
           const height = bottomPx - topPx;
-
           return {
             label: pd.label,
             top: topPx,
             height,
             colorClass: pd.colorClass
           };
-        }).filter(Boolean); // quitar los null
+        }).filter(Boolean);
       }, [minYear, maxYear, scale]);
 
       return (
         <div className="max-w-6xl mx-auto p-4">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            Línea de Tiempo Proporcional (con Filtros y Expansión)
+            Línea de Tiempo Proporcional
           </h1>
 
-          {/* Controles de filtrado */}
+          {/* Filtros */}
           <div className="flex justify-center gap-3 flex-wrap mb-4">
             <button
               onClick={() => setSelectedCiv('all')}
@@ -439,25 +478,25 @@
             />
           </div>
 
-          {/* Si no hay eventos, mostrar aviso */}
+          {/* Sin eventos */}
           {filteredEvents.length === 0 && (
             <div className="text-center text-red-500 font-semibold">
-              No hay eventos para esta selección.
+              No hay eventos para la selección actual.
             </div>
           )}
 
-          {/* CONTENEDOR PRINCIPAL DEL TIMELINE */}
+          {/* CONTENEDOR TIMELINE */}
           <div 
-            className="relative mx-auto"
+            className="relative mx-auto bg-gray-50"
             style={{
               width: '100%',
-              height: timelineHeight + 'px',
               maxWidth: '900px',
+              height: timelineHeight + 'px',
               overflow: 'hidden',
-              backgroundColor: '#f9fafb'
+              border: '1px solid #ccc'
             }}
           >
-            {/* Periodos de fondo (Edad Antigua, Media, etc.) */}
+            {/* Periodos de fondo */}
             {periodRects.map((pd, idx) => (
               <div
                 key={idx}
@@ -467,8 +506,7 @@
                   height: pd.height + 'px'
                 }}
               >
-                {/* Etiqueta del periodo (opcional). 
-                    Si la altura es muy pequeña, quizá no se vea. */}
+                {/* Etiqueta del periodo */}
                 <div className="text-sm text-gray-600 font-semibold pl-2 pt-2">
                   {pd.label}
                 </div>
@@ -486,35 +524,52 @@
               }}
             />
 
-            {/* Eventos posicionados con absolute */}
+            {/* EVENTOS */}
             {eventPositions.map((ev, i) => {
               const isOpen = (expandedIndex === i);
-              // Lado
-              const isLeft = ev.side === 'left';
-              // Ajustes CSS
+              const isLeft = (ev.side === 'left');
+
+              // Estilo para contenedor
               const sideStyle = isLeft
-                ? { right: '52%' }  // un poco a la izquierda
-                : { left: '52%' }; // un poco a la derecha
+                ? { right: '52%' }
+                : { left: '52%' };
 
               return (
                 <div
                   key={i}
                   className="absolute w-[40%] group"
-                  style={{ top: ev.offsetTop + 'px', ...sideStyle }}
+                  style={{
+                    top: ev.offsetTop + 'px',
+                    ...sideStyle
+                  }}
                 >
-                  {/* Un conector que va al centro */}
+                  {/* Conector horizontal hacia el centro */}
                   <div
                     className={`absolute h-0.5 bg-gray-400 top-3
                       ${isLeft ? 'right-[-52%] w-[52%]' : 'left-[-52%] w-[52%]'}
                     `}
                   />
 
-                  {/* Punto (círculo) en el centro de la línea */}
-                  {/* Realmente está "dentro" del conector */}
-                  
-                  {/* Caja del evento */}
+                  {/* Pequeño círculo en el centro de la línea, con color */}
+                  <div
+                    className={`absolute w-6 h-6 rounded-full shadow-md border-2 border-white
+                      ${getColorClass(ev.civilization)}
+                    `}
+                    style={{
+                      top: '0.5rem',
+                      ...(isLeft
+                        ? { right: '-6%', transform: 'translateX(-50%)' }
+                        : { left: '-6%', transform: 'translateX(-50%)' })
+                    }}
+                  >
+                    {/* Tooltip con nombre del evento al hacer hover */}
+                    <div className="invisible group-hover:visible absolute bg-black text-white text-xs py-1 px-2 rounded -top-8 left-[-20px] w-40 text-center">
+                      {ev.event}
+                    </div>
+                  </div>
+
+                  {/* Caja del evento (tarjeta) */}
                   <div className="bg-white p-4 shadow-lg rounded-lg hover:shadow-xl transition-shadow">
-                    {/* Título con icono para expandir */}
                     <div 
                       className="flex justify-between items-center cursor-pointer"
                       onClick={() => toggleExpand(i)}
@@ -530,7 +585,7 @@
                       {formatYear(ev.year)}
                     </div>
 
-                    {/* Descripción (solo si expandido) */}
+                    {/* Descripción expandida */}
                     {isOpen && (
                       <div className="mt-2 text-gray-700">
                         <p className="mb-2">{ev.description}</p>
@@ -552,9 +607,7 @@
       );
     }
 
-    // -----------------------------------------------------------------------------------
-    // RENDER PRINCIPAL
-    // -----------------------------------------------------------------------------------
+    // Montar en #root
     ReactDOM.createRoot(document.getElementById('root')).render(<Timeline />);
   </script>
 </body>
