@@ -13,8 +13,7 @@
   <!-- Babel para usar JSX en el navegador -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- React Icons en versión UMD para usarlas en el navegador -->
-  <!-- (Usaremos FaChevronDown / FaChevronUp) -->
+  <!-- React Icons (UMD) -->
   <script src="https://unpkg.com/react-icons@4.9.0/umd/react-icons.production.min.js"></script>
 </head>
 
@@ -26,8 +25,14 @@
   <script type="text/babel">
     // Extraemos lo que necesitamos de React
     const { useState } = React;
-    // React Icons están en la variable global "ReactIcons"
-    const { FaChevronDown, FaChevronUp } = ReactIcons.fa || {};
+
+    // Asegurarnos de que ReactIcons existe y tiene .fa
+    // (Puede ser ReactIcons.fa o ReactIcons.Fa, depende de cómo esté empaquetado.)
+    const faIcons = (window.ReactIcons && (window.ReactIcons.fa || window.ReactIcons.Fa)) || {};
+
+    // Extraemos, o definimos fallback si no existen
+    const FaChevronDown = faIcons.FaChevronDown || (() => '▼');
+    const FaChevronUp = faIcons.FaChevronUp || (() => '▲');
 
     // Componente principal: Timeline
     function Timeline() {
@@ -329,9 +334,9 @@
                     >
                       <h3 className="font-bold text-xl">{event.event}</h3>
                       {isExpanded ? (
-                        FaChevronUp ? <FaChevronUp /> : '▲'
+                        <FaChevronUp />
                       ) : (
-                        FaChevronDown ? <FaChevronDown /> : '▼'
+                        <FaChevronDown />
                       )}
                     </div>
 
