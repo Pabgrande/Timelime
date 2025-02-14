@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Línea de Tiempo (React + GitHub Pages)</title>
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React (CDN) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel (para usar JSX) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body class="bg-gray-100">
+  <!-- Contenedor donde React va a “pintar” la app -->
+  <div id="root" class="max-w-6xl mx-auto py-10"></div>
+
+  <!-- Aquí va el código React + JSX -->
+  <script type="text/babel">
+    // Extraemos useState desde la variable global 'React'
+    const { useState } = React;
+
+    function Timeline() {
+      const [selectedCivilization, setSelectedCivilization] = useState('all');
+
+      // Lista de eventos históricos (puedes añadir más)
+      const events = [
+        // Egipcia
+        {
+          year: -3150,
+          civilization: 'egipcia',
+          event: 'Unificación del Alto y Bajo Egipto',
+          description: 'Narmer unifica Egipto y funda la Primera Dinastía.'
+        },
+        {
+          year: -2560,
+          civilization: 'egipcia',
+          event: 'Construcción de la Gran Pirámide',
+          description: 'La Gran Pirámide de Guiza, construida por el faraón Keops.'
+        },
+        {
+          year: -30,
+          civilization: 'egipcia',
+          event: 'Fin del Egipto faraónico',
+          description: 'Muerte de Cleopatra VII. Egipto se convierte en provincia romana.'
+        },
+
+        // Griega
+        {
+          year: -2000,
+          civilization: 'griega',
+          event: 'Civilización Minoica',
+          description: 'Palacios en Creta (Cnosos). Inicio de la cultura griega temprana.'
+        },
+        {
+          year: -776,
+          civilization: 'griega',
+          event: 'Primeros Juegos Olímpicos',
+          description: 'Celebrados en Olimpia. Punto de partida del calendario griego.'
+        },
+        {
+          year: -146,
+          civilization: 'griega',
+          event: 'Conquista de Grecia por Roma',
+          description: 'Batalla de Corinto. Grecia se integra en el mundo romano.'
+        },
+
+        // Romana
+        {
+          year: -753,
+          civilization: 'romana',
+          event: 'Fundación de Roma',
+          description: 'Leyenda de Rómulo y Remo. Inicio del período monárquico.'
+        },
+        {
+          year: -27,
+          civilization: 'romana',
+          event: 'Inicio del Imperio Romano',
+          description: 'Octavio (Augusto) se proclama primer emperador. Pax Romana.'
+        },
+        {
+          year: 476,
+          civilization: 'romana',
+          event: 'Caída del Imperio Romano de Occidente',
+          description: 'Depuesto Rómulo Augústulo. Inicio de la Edad Media en Europa.'
+        }
+      ].sort((a, b) => a.year - b.year);
+
+      // Colores según civilización
+      const civilizationColors = {
+        egipcia: 'bg-yellow-600',
+        griega: 'bg-blue-600',
+        romana: 'bg-red-600'
+      };
+
+      // Filtrar según la selección
+      const filteredEvents = selectedCivilization === 'all' 
+        ? events 
+        : events.filter(ev => ev.civilization === selectedCivilization);
+
+      // Función para formatear el año
+      const formatYear = (year) => {
+        // Si es negativo, es a.C. (por ejemplo -500 => "500 a.C.")
+        // Si es positivo, es d.C.
+        return year < 0 ? `${Math.abs(year)} a.C.` : `${year} d.C.`;
+      };
+
+      return (
+        <div className="p-4 bg-white shadow-md rounded-md">
+          <h1 className="text-3xl font-bold text-center mb-4">Línea Temporal de Civilizaciones</h1>
+
+          {/* Botones de filtro */}
+          <div className="flex justify-center space-x-4 mb-6">
+            <button
+              className={`
+                px-4 py-2 rounded
+                ${selectedCivilization === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-200 hover:bg-gray-300'}
+              `}
+              onClick={() => setSelectedCivilization('all')}
+            >
+              Todas
+            </button>
+            <button
+              className={`
+                px-4 py-2 rounded
+                ${selectedCivilization === 'egipcia' ? 'bg-yellow-600 text-white' : 'bg-yellow-200 hover:bg-yellow-300'}
+              `}
+              onClick={() => setSelectedCivilization('egipcia')}
+            >
+              Egipcia
+            </button>
+            <button
+              className={`
+                px-4 py-2 rounded
+                ${selectedCivilization === 'griega' ? 'bg-blue-600 text-white' : 'bg-blue-200 hover:bg-blue-300'}
+              `}
+              onClick={() => setSelectedCivilization('griega')}
+            >
+              Griega
+            </button>
+            <button
+              className={`
+                px-4 py-2 rounded
+                ${selectedCivilization === 'romana' ? 'bg-red-600 text-white' : 'bg-red-200 hover:bg-red-300'}
+              `}
+              onClick={() => setSelectedCivilization('romana')}
+            >
+              Romana
+            </button>
+          </div>
+
+          {/* Línea vertical */}
+          <div className="relative">
+            {/* Barra central */}
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-300"></div>
+
+            {/* Lista de eventos */}
+            {filteredEvents.map((ev, idx) => (
+              <div key={idx} className="relative pl-20 pb-8">
+                {/* Punto en la línea */}
+                <div
+                  className={`absolute left-6 w-6 h-6 rounded-full shadow-lg ${civilizationColors[ev.civilization]}`}
+                  style={{ top: '1.2rem' }}
+                ></div>
+
+                {/* Año a la izquierda */}
+                <div className="absolute left-0 top-0 text-sm font-semibold w-16 text-right">
+                  {formatYear(ev.year)}
+                </div>
+
+                {/* Caja de info */}
+                <div className="bg-gray-50 p-4 rounded-md shadow-md hover:shadow-lg transition-shadow">
+                  <h2 className="font-bold text-lg mb-1">{ev.event}</h2>
+                  <p className="text-gray-600">{ev.description}</p>
+                  <span 
+                    className={`inline-block px-3 py-1 mt-3 rounded-full text-white text-sm ${civilizationColors[ev.civilization]}`}
+                  >
+                    Civilización {ev.civilization}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Montar el componente React en #root
+    ReactDOM.createRoot(document.getElementById('root')).render(<Timeline />);
+  </script>
+</body>
+</html>
