@@ -43,66 +43,283 @@
 
     const ALL_EVENTS = [
       // OTROS (10 eventos)
-      {
-        year: -2500,
-        civilization: 'otros',
-        event: 'Civilización del Valle del Indo',
-        description: 'Nace en la región de Harappa y Mohenjo-Daro (actual Pakistán).'
-      },
-      {
-        year: -2070,
-        civilization: 'otros',
-        event: 'Dinastía Xia (China)',
-        description: 'Según la tradición, primera dinastía de China. Marco inicial de la historia china.'
-      },
-      {
-        year: -1800,
-        civilization: 'otros',
-        event: 'Reinado de Hammurabi en Babilonia',
-        description: 'Código de Hammurabi, uno de los más antiguos sistemas legales conocidos.'
-      },
-      {
-        year: -1200,
-        civilization: 'otros',
-        event: 'Civilización Olmeca (Mesoamérica)',
-        description: 'Considerada la “cultura madre” de Mesoamérica. Monumentales cabezas colosales.'
-      },
-      {
-        year: -550,
-        civilization: 'otros',
-        event: 'Imperio persa aqueménida',
-        description: 'Ciro el Grande funda el Imperio Persa, conquistando Babilonia y otros territorios.'
-      },
-      {
-        year: -221,
-        civilization: 'otros',
-        event: 'Unificación de China (Dinastía Qin)',
-        description: 'Qin Shi Huang unifica los Reinos Combatientes y se proclama primer emperador de China.'
-      },
-      {
-        year: 200,
-        civilization: 'otros',
-        event: 'Civilización Maya clásica',
-        description: 'Auge de ciudades-Estado mayas en Tikal, Palenque, Copán, etc.'
-      },
-      {
-        year: 622,
-        civilization: 'otros',
-        event: 'Hégira (Islam)',
-        description: 'Mahoma huye de La Meca a Medina. Inicio del calendario islámico.'
-      },
-      {
-        year: 750,
-        civilization: 'otros',
-        event: 'Imperio Carolingio',
-        description: 'Pipino el Breve y luego Carlomagno forman la base de la Europa medieval.'
-      },
-      {
-        year: 1054,
-        civilization: 'otros',
-        event: 'Cisma de Oriente',
-        description: 'Separación de la Iglesia católica romana y la ortodoxa (Constantinopla).'
-      },
+{
+  year: -3500,
+  civilization: 'otros',
+  event: 'Surgimiento de la civilización sumeria',
+  description: 'Se consolidan las primeras ciudades-estado (Uruk, Eridu) en la Baja Mesopotamia.'
+},
+{
+  year: -3400,
+  civilization: 'otros',
+  event: 'Cuneiforme primitivo en Sumer',
+  description: 'Primeras tablillas con escritura cuneiforme incipiente en Mesopotamia.'
+},
+{
+  year: -3300,
+  civilization: 'otros',
+  event: 'Expansión de Uruk',
+  description: 'Crecen las urbes sumerias, con complejas instituciones políticas y religiosas.'
+},
+{
+  year: -3200,
+  civilization: 'otros',
+  event: 'Monumentos megalíticos en Malta',
+  description: 'Construcción de templos y estructuras megalíticas (p.ej. Ġgantija).'
+},
+{
+  year: -3100,
+  civilization: 'otros',
+  event: 'Primera fase de Stonehenge',
+  description: 'Inicio de construcciones neolíticas en la llanura de Salisbury (Gran Bretaña).'
+},
+{
+  year: -3000,
+  civilization: 'otros',
+  event: 'Civilización Caral en Perú',
+  description: 'Surgimiento de una de las civilizaciones más antiguas de América en el valle de Supe.'
+},
+{
+  year: -2900,
+  civilization: 'otros',
+  event: 'Valle del Indo en pleno desarrollo',
+  description: 'Harappa y Mohenjo-Daro muestran gran planificación urbana y comercio.'
+},
+{
+  year: -2800,
+  civilization: 'otros',
+  event: 'Leyendas del Rey Gilgamesh',
+  description: 'Poemas sumerios sobre el rey-heroé de Uruk, base del “Poema de Gilgamesh”.'
+},
+{
+  year: -2700,
+  civilization: 'otros',
+  event: 'Dinastía Xia (tradicional) en China',
+  description: 'Según fuentes chinas, se establece la primera dinastía, aunque con debate arqueológico.'
+},
+{
+  year: -2600,
+  civilization: 'otros',
+  event: 'Cultura Bactria-Margiana (Asia Central)',
+  description: 'Florece un complejo arqueológico en las actuales Turkmenistán y Uzbekistán.'
+},
+{
+  year: -2500,
+  civilization: 'otros',
+  event: 'Consolidación definitiva del valle del Indo',
+  description: 'Mohenjo-Daro y Harappa alcanzan gran apogeo con avanzados sistemas de drenaje.'
+},
+{
+  year: -2400,
+  civilization: 'otros',
+  event: 'Apogeo del reino de Dilmun (Bahréin)',
+  description: 'Importante centro comercial en la ruta marítima entre Mesopotamia e India.'
+},
+{
+  year: -2300,
+  civilization: 'otros',
+  event: 'Sargón de Akkad funda el Imperio acadio',
+  description: 'Primer gran imperio mesopotámico, unificando ciudades sumerias y semitas.'
+},
+{
+  year: -2200,
+  civilization: 'otros',
+  event: 'Caída del Imperio acadio',
+  description: 'Tras la muerte de Naram-Sin, revueltas internas y presión de pueblos vecinos.'
+},
+{
+  year: -2100,
+  civilization: 'otros',
+  event: 'Dinastía III de Ur (Renacimiento sumerio)',
+  description: 'Resurgir de Sumer en la Baja Mesopotamia; construcción de grandes zigurat.'
+},
+{
+  year: -2000,
+  civilization: 'otros',
+  event: 'Reino de Elam en Persia',
+  description: 'Fortalecimiento de Susa y expansión por la meseta iraní.'
+},
+{
+  year: -1900,
+  civilization: 'otros',
+  event: 'Declive del valle del Indo',
+  description: 'Desaparición progresiva de las grandes urbes y cambios climáticos.'
+},
+{
+  year: -1800,
+  civilization: 'otros',
+  event: 'Reinado de Hammurabi en Babilonia',
+  description: 'Promulga el famoso Código de Hammurabi, uno de los primeros conjuntos legales.'
+},
+{
+  year: -1700,
+  civilization: 'otros',
+  event: 'Difusión del cultivo de arroz en Asia oriental',
+  description: 'Expansión agrícola que impulsa el crecimiento de aldeas y ciudades en China.'
+},
+{
+  year: -1600,
+  civilization: 'otros',
+  event: 'Dinastía Shang en China',
+  description: 'Primera dinastía china bien atestiguada, con bronces rituales y escritura oracular.'
+},
+{
+  year: -1500,
+  civilization: 'otros',
+  event: 'Inicio del Vedismo en la India',
+  description: 'Composición de los Vedas y consolidación de la cultura védica en el subcontinente indio.'
+},
+{
+  year: -1400,
+  civilization: 'otros',
+  event: 'Expansión del reino Hitita en Anatolia',
+  description: 'Los hititas rivalizan con Egipto y Mitanni por el control del Próximo Oriente.'
+},
+{
+  year: -1300,
+  civilization: 'otros',
+  event: 'Formación de reinos védicos en el Ganges',
+  description: 'Migraciones arias y surgimiento de la cultura del Ganges en el norte de la India.'
+},
+{
+  year: -1200,
+  civilization: 'otros',
+  event: 'Florecimiento de la cultura olmeca en Mesoamérica',
+  description: 'La “cultura madre” mesoamericana, conocida por sus cabezas colosales.'
+},
+{
+  year: -1100,
+  civilization: 'otros',
+  event: 'Dinastía Zhou en China (comienzos ~ -1046)',
+  description: 'Los Zhou desplazan a los Shang y gobiernan gran parte del valle del Huang He.'
+},
+{
+  year: -1000,
+  civilization: 'otros',
+  event: 'Reino de Israel bajo Saúl y David',
+  description: 'Monarquía unida que integra buena parte de Canaán.'
+},
+{
+  year: -900,
+  civilization: 'otros',
+  event: 'Civilización Chavín en los Andes (Perú)',
+  description: 'Centro ceremonial en Chavín de Huántar, influye en futuras culturas andinas.'
+},
+{
+  year: -800,
+  civilization: 'otros',
+  event: 'Surgimiento de la cultura etrusca en Italia central',
+  description: 'Pueblo avanzado en metalurgia e ingeniería, antecedente de Roma (pero cultura distinta).'
+},
+{
+  year: -700,
+  civilization: 'otros',
+  event: 'Imperio Neoasirio en su apogeo',
+  description: 'Asiria controla gran parte de Mesopotamia, Levante y Egipto brevemente.'
+},
+{
+  year: -600,
+  civilization: 'otros',
+  event: 'Nabucodonosor II (Babilonia)',
+  description: 'Reconstruye Babilonia (Jardines Colgantes). Conquista Juda y destruye Jerusalén.'
+},
+{
+  year: -500,
+  civilization: 'otros',
+  event: 'Confucio enseña en China',
+  description: 'Sus ideas morales y políticas modelan la sociedad china durante siglos.'
+},
+{
+  year: -400,
+  civilization: 'otros',
+  event: 'Enseñanzas del Buda en el norte de la India',
+  description: 'Siddhartha Gautama difunde el budismo. Época de expansión del pensamiento religioso.'
+},
+{
+  year: -300,
+  civilization: 'otros',
+  event: 'Imperio Maurya bajo Chandragupta',
+  description: 'Unificación de gran parte del subcontinente indio, capital en Pataliputra.'
+},
+{
+  year: -200,
+  civilization: 'otros',
+  event: 'Reinado de Ashoka (India)',
+  description: 'Expansión del budismo y desarrollo de edictos en pilares y rocas.'
+},
+{
+  year: -100,
+  civilization: 'otros',
+  event: 'Dinastía Han en China en auge',
+  description: 'Se consolida la Ruta de la Seda y la burocracia confuciana.'
+},
+{
+  year: 0,
+  civilization: 'otros',
+  event: 'Tradicional nacimiento de Jesús en Judea',
+  description: 'Según el calendario cristiano, marca el inicio de la era d.C.'
+},
+{
+  year: 100,
+  civilization: 'otros',
+  event: 'Cultura Nazca en la costa sur de Perú',
+  description: 'Famosos geoglifos y cerámica policroma en la región del río Grande de Nazca.'
+},
+{
+  year: 200,
+  civilization: 'otros',
+  event: 'Período Clásico maya en Mesoamérica',
+  description: 'Evolución de ciudades como Tikal, Calakmul y Palenque, con gran desarrollo astronómico.'
+},
+{
+  year: 300,
+  civilization: 'otros',
+  event: 'Reino de Aksum en Etiopía adopta el cristianismo',
+  description: 'Potencia comercial en el Cuerno de África, influyente en rutas del Mar Rojo.'
+},
+{
+  year: 400,
+  civilization: 'otros',
+  event: 'Migraciones de los hunos en Eurasia',
+  description: 'Desplazamientos de pueblos en las estepas; presión sobre Europa y Asia central.'
+},
+{
+  year: 500,
+  civilization: 'otros',
+  event: 'Apogeo del Imperio Gupta en la India',
+  description: '“Edad de oro” del hinduismo; florecimiento de la ciencia y las artes (Aryabhata).'
+},
+{
+  year: 600,
+  civilization: 'otros',
+  event: 'Hégira de Mahoma (622)',
+  description: 'Mahoma huye de La Meca a Medina; se inicia el calendario islámico.'
+},
+{
+  year: 700,
+  civilization: 'otros',
+  event: 'Califato omeya se expande',
+  description: 'Se extiende desde la Península Ibérica hasta Asia Central, unificando gran parte del mundo islámico.'
+},
+{
+  year: 800,
+  civilization: 'otros',
+  event: 'Dinastía Tang en su cénit (China)',
+  description: 'Florece la cultura china en arte, poesía (Li Bai, Du Fu) y prosperan las rutas comerciales.'
+},
+{
+  year: 900,
+  civilization: 'otros',
+  event: 'Civilización jemer en Angkor (Camboya)',
+  description: 'Construcción de templos como Phnom Bakheng; futuro esplendor de Angkor Wat.'
+},
+{
+  year: 1000,
+  civilization: 'otros',
+  event: 'Imperio Chola en el sur de la India',
+  description: 'Potencia marítima en el Océano Índico; templos dravídicos y comercio internacional.'
+},
+        
 
       // EGIPCIA (10 eventos)
       {
@@ -154,9 +371,9 @@
         description: 'El “faraón niño”. Restablece el culto a Amón tras la reforma de Akenatón.'
       },
       {
-        year: -51,
+        year: -71,
         civilization: 'egipcia',
-        event: 'Cleopatra VII',
+        event: 'Cleopatra VII año -51',
         description: 'Última gobernante helenística de Egipto. Alianzas con Julio César y Marco Antonio.'
       },
       {
