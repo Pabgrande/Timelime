@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Línea de Tiempo Proporcional (React + GitHub Pages)</title>
-
+  <title>Línea de Tiempo Avanzada (React + GitHub Pages)</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -27,22 +26,15 @@
     // Extraemos lo que necesitamos de React
     const { useState } = React;
 
-    // Comprobamos ReactIcons y la familia 'fa' (FontAwesome).
+    // Asegurarnos de que ReactIcons existe y tiene .fa
+    // (Puede ser ReactIcons.fa o ReactIcons.Fa, depende de cómo esté empaquetado.)
     const faIcons = (window.ReactIcons && (window.ReactIcons.fa || window.ReactIcons.Fa)) || {};
-    // Fallbacks (flechas) si no cargan los íconos
+
+    // Extraemos, o definimos fallback si no existen
     const FaChevronDown = faIcons.FaChevronDown || (() => '▼');
     const FaChevronUp = faIcons.FaChevronUp || (() => '▲');
 
-    // Definimos grandes eras para el fondo (a modo de ejemplo)
-    // Puedes ajustar las fechas y colores según gustos. 
-    const eras = [
-      { name: 'Prehistoria tardía', start: -5000, end: -3150, color: 'bg-purple-100' },
-      { name: 'Edad Antigua', start: -3150, end: 476, color: 'bg-blue-100' },
-      { name: 'Edad Media', start: 476, end: 1492, color: 'bg-green-100' },
-      { name: 'Edad Moderna', start: 1492, end: 1789, color: 'bg-yellow-100' },
-      { name: 'Edad Contemporánea', start: 1789, end: 2023, color: 'bg-red-100' },
-    ];
-
+    // Componente principal: Timeline
     function Timeline() {
       const [selectedCivilization, setSelectedCivilization] = useState('all');
       // Toggle a.C./d.C. vs BCE/CE
@@ -56,95 +48,187 @@
       };
 
       // Lista de eventos con más detalle (ordenados por año)
-      const eventsData = [
-        // Civilización Egipcia
-        { year: -3150, civilization: 'egipcia', event: 'Unificación del Alto y Bajo Egipto', description: 'Narmer (Menes) unifica Egipto y establece la Primera Dinastía. Construcción de Menfis.' },
-        { year: -2686, civilization: 'egipcia', event: 'Inicio del Imperio Antiguo', description: 'También conocido como la “Edad de las Pirámides”. La pirámide escalonada de Djoser es un gran hito.' },
-        { year: -2560, civilization: 'egipcia', event: 'Construcción de la Gran Pirámide', description: 'El faraón Keops construye la Gran Pirámide de Guiza, una de las Siete Maravillas del Mundo Antiguo.' },
-        { year: -1550, civilization: 'egipcia', event: 'Imperio Nuevo', description: 'Período de máxima expansión territorial, con faraones célebres como Ramsés II, Tutankamón y Hatshepsut.' },
-        { year: -1332, civilization: 'egipcia', event: 'Reinado de Tutankamón', description: 'El “faraón niño”. Restauración del culto a Amón tras las reformas de Akenatón.' },
-        { year: -51,  civilization: 'egipcia', event: 'Cleopatra VII', description: 'Última faraona de Egipto. Relaciones con Julio César y Marco Antonio.' },
-        { year: -30,  civilization: 'egipcia', event: 'Fin del Egipto faraónico', description: 'Muerte de Cleopatra VII. Egipto pasa a ser provincia romana.' },
+      const events = [
+        // Egipcia
+        {
+          year: -3150,
+          civilization: 'egipcia',
+          event: 'Unificación del Alto y Bajo Egipto',
+          description: 'Narmer (Menes) unifica Egipto y establece la Primera Dinastía. Construcción de Menfis.'
+        },
+        {
+          year: -2686,
+          civilization: 'egipcia',
+          event: 'Inicio del Imperio Antiguo',
+          description: 'También conocido como la “Edad de las Pirámides”. La pirámide escalonada de Djoser es un gran hito.'
+        },
+        {
+          year: -2560,
+          civilization: 'egipcia',
+          event: 'Construcción de la Gran Pirámide',
+          description: 'El faraón Keops construye la Gran Pirámide de Guiza, una de las Siete Maravillas del Mundo Antiguo.'
+        },
+        {
+          year: -1550,
+          civilization: 'egipcia',
+          event: 'Imperio Nuevo',
+          description: 'Período de máxima expansión territorial, con faraones célebres como Ramsés II, Tutankamón y Hatshepsut.'
+        },
+        {
+          year: -1332,
+          civilization: 'egipcia',
+          event: 'Reinado de Tutankamón',
+          description: 'El “faraón niño”. Restauración del culto a Amón tras las reformas de Akenatón.'
+        },
+        {
+          year: -51,
+          civilization: 'egipcia',
+          event: 'Cleopatra VII',
+          description: 'Última faraona de Egipto. Relaciones con Julio César y Marco Antonio.'
+        },
+        {
+          year: -30,
+          civilization: 'egipcia',
+          event: 'Fin del Egipto faraónico',
+          description: 'Muerte de Cleopatra VII. Egipto pasa a ser provincia romana.'
+        },
 
-        // Civilización Griega
-        { year: -2000, civilization: 'griega', event: 'Civilización Minoica en Creta', description: 'Palacios como el de Cnosos. Escritura lineal A. Importante influencia en el Mediterráneo oriental.' },
-        { year: -1200, civilization: 'griega', event: 'Guerra de Troya (mítica)', description: 'Conflicto épico entre aqueos y troyanos, descrito en la Ilíada de Homero.' },
-        { year: -776,  civilization: 'griega', event: 'Primeros Juegos Olímpicos', description: 'Celebrados en Olimpia. Considerados el inicio del calendario griego antiguo.' },
-        { year: -508,  civilization: 'griega', event: 'Democracia Ateniense', description: 'Clístenes promulga reformas que dan origen a la democracia en Atenas.' },
-        { year: -490,  civilization: 'griega', event: 'Guerras Médicas', description: 'Conflicto Grecia vs. Persia. Batalla de Maratón y la resistencia en las Termópilas.' },
-        { year: -399,  civilization: 'griega', event: 'Juicio y muerte de Sócrates', description: 'Fundamental en la historia de la filosofía. Platón registra su defensa en la “Apología”.' },
-        { year: -336,  civilization: 'griega', event: 'Alejandro Magno asciende al trono', description: 'Conquista un gran imperio que llega a Egipto y la India. Difusión de la cultura helenística.' },
-        { year: -323,  civilization: 'griega', event: 'Muerte de Alejandro Magno', description: 'El Imperio se divide en reinos helenísticos. Egipto pasa a los Ptolomeos.' },
-        { year: -146,  civilization: 'griega', event: 'Conquista Romana de Grecia', description: 'Batalla de Corinto. Grecia se convierte en provincia del emergente Imperio Romano.' },
+        // Griega
+        {
+          year: -2000,
+          civilization: 'griega',
+          event: 'Civilización Minoica en Creta',
+          description: 'Palacios como el de Cnosos. Escritura lineal A. Importante influencia en el Mediterráneo oriental.'
+        },
+        {
+          year: -1200,
+          civilization: 'griega',
+          event: 'Guerra de Troya (mítica)',
+          description: 'Conflicto épico entre aqueos y troyanos, descrito en la Ilíada de Homero.'
+        },
+        {
+          year: -776,
+          civilization: 'griega',
+          event: 'Primeros Juegos Olímpicos',
+          description: 'Celebrados en Olimpia. Considerados el inicio del calendario griego antiguo.'
+        },
+        {
+          year: -508,
+          civilization: 'griega',
+          event: 'Democracia Ateniense',
+          description: 'Clístenes promulga reformas que dan origen a la democracia en Atenas.'
+        },
+        {
+          year: -490,
+          civilization: 'griega',
+          event: 'Guerras Médicas',
+          description: 'Conflicto Grecia vs. Persia. Batalla de Maratón y la resistencia en las Termópilas.'
+        },
+        {
+          year: -399,
+          civilization: 'griega',
+          event: 'Juicio y muerte de Sócrates',
+          description: 'Fundamental en la historia de la filosofía. Platón registra su defensa en la “Apología”.'
+        },
+        {
+          year: -336,
+          civilization: 'griega',
+          event: 'Alejandro Magno asciende al trono',
+          description: 'Conquista un gran imperio que llega a Egipto y la India. Difusión de la cultura helenística.'
+        },
+        {
+          year: -323,
+          civilization: 'griega',
+          event: 'Muerte de Alejandro Magno',
+          description: 'El Imperio se divide en reinos helenísticos. Egipto pasa a los Ptolomeos.'
+        },
+        {
+          year: -146,
+          civilization: 'griega',
+          event: 'Conquista Romana de Grecia',
+          description: 'Batalla de Corinto. Grecia se convierte en provincia del emergente Imperio Romano.'
+        },
 
-        // Civilización Romana
-        { year: -753,  civilization: 'romana', event: 'Fundación de Roma', description: 'Mito de Rómulo y Remo. Inicio del período monárquico.' },
-        { year: -509,  civilization: 'romana', event: 'República Romana', description: 'Derrocamiento de Tarquinio el Soberbio. Nace un sistema republicano con Senado y cónsules.' },
-        { year: -264,  civilization: 'romana', event: 'Guerras Púnicas', description: 'Conflictos con Cartago (Aníbal, Escipión). Roma domina el Mediterráneo occidental.' },
-        { year: -49,   civilization: 'romana', event: 'Julio César cruza el Rubicón', description: '“La suerte está echada”. Inicio de la guerra civil que transformará la República.' },
-        { year: -44,   civilization: 'romana', event: 'Asesinato de Julio César', description: 'Conspiración de Bruto y Casio. Roma entra en un nuevo periodo de guerras civiles.' },
-        { year: -27,   civilization: 'romana', event: 'Imperio Romano - Augusto', description: 'Octavio se proclama Augusto. Comienza la etapa imperial y la Pax Romana.' },
-        { year: 79,    civilization: 'romana', event: 'Erupción del Vesubio', description: 'Destrucción de Pompeya y Herculano en tiempos del emperador Tito.' },
-        { year: 117,   civilization: 'romana', event: 'Máxima expansión con Trajano', description: 'El Imperio se extiende desde Britania hasta Oriente Próximo.' },
-        { year: 313,   civilization: 'romana', event: 'Edicto de Milán', description: 'Constantino I legaliza el cristianismo, marcando un giro histórico en Roma.' },
-        { year: 395,   civilization: 'romana', event: 'División del Imperio', description: 'Teodosio reparte Roma entre sus hijos (Arcadio en Oriente y Honorio en Occidente).' },
-        { year: 476,   civilization: 'romana', event: 'Caída del Imperio Romano de Occidente', description: 'Destitución de Rómulo Augústulo. Fin de la Antigüedad en Occidente.' },
-
-        // Civilización Ibérica (hechos en la Península Ibérica)
-        { year: -218,   civilization: 'iberica', event: 'Llegada de los romanos a la Península Ibérica', description: 'La Península fue llamada Hispania. Inicio de la romanización.' },
-        { year: 409,    civilization: 'iberica', event: 'Invasión de pueblos germánicos', description: 'Suevos, vándalos y alanos penetran en Hispania, marcando el fin de la administración romana.' },
-        { year: 711,    civilization: 'iberica', event: 'Invasión musulmana', description: 'Táriq cruza el Estrecho de Gibraltar. Derrota del rey visigodo Rodrigo en Guadalete.' },
-        { year: 718,    civilization: 'iberica', event: 'Comienzo de la Reconquista', description: 'Se considera la resistencia astur tras la Batalla de Covadonga (722).' },
-        { year: 929,    civilization: 'iberica', event: 'Creación del Califato de Córdoba', description: 'Abderramán III se proclama Califa, época de esplendor del al-Ándalus.' },
-        { year: 1492,   civilization: 'iberica', event: 'Toma de Granada', description: 'Los Reyes Católicos conquistan el último reino nazarí. Fin de la Edad Media en la Península.' },
-      ];
-
-      // Ordenamos por año (por si no están en orden)
-      const allEvents = eventsData.sort((a, b) => a.year - b.year);
+        // Romana
+        {
+          year: -753,
+          civilization: 'romana',
+          event: 'Fundación de Roma',
+          description: 'Mito de Rómulo y Remo. Inicio del período monárquico.'
+        },
+        {
+          year: -509,
+          civilization: 'romana',
+          event: 'República Romana',
+          description: 'Derrocamiento de Tarquinio el Soberbio. Nace un sistema republicano con Senado y cónsules.'
+        },
+        {
+          year: -264,
+          civilization: 'romana',
+          event: 'Guerras Púnicas',
+          description: 'Conflictos con Cartago (Aníbal, Escipión). Roma domina el Mediterráneo occidental.'
+        },
+        {
+          year: -49,
+          civilization: 'romana',
+          event: 'Julio César cruza el Rubicón',
+          description: '“La suerte está echada”. Inicio de la guerra civil que transformará la República.'
+        },
+        {
+          year: -44,
+          civilization: 'romana',
+          event: 'Asesinato de Julio César',
+          description: 'Conspiración de Bruto y Casio. Roma entra en un nuevo periodo de guerras civiles.'
+        },
+        {
+          year: -27,
+          civilization: 'romana',
+          event: 'Imperio Romano - Augusto',
+          description: 'Octavio se proclama Augusto. Comienza la etapa imperial y la Pax Romana.'
+        },
+        {
+          year: 79,
+          civilization: 'romana',
+          event: 'Erupción del Vesubio',
+          description: 'Destrucción de Pompeya y Herculano en tiempos del emperador Tito.'
+        },
+        {
+          year: 117,
+          civilization: 'romana',
+          event: 'Máxima expansión con Trajano',
+          description: 'El Imperio se extiende desde Britania hasta Oriente Próximo.'
+        },
+        {
+          year: 313,
+          civilization: 'romana',
+          event: 'Edicto de Milán',
+          description: 'Constantino I legaliza el cristianismo, marcando un giro histórico en Roma.'
+        },
+        {
+          year: 395,
+          civilization: 'romana',
+          event: 'División del Imperio',
+          description: 'Teodosio reparte Roma entre sus hijos (Arcadio en Oriente y Honorio en Occidente).'
+        },
+        {
+          year: 476,
+          civilization: 'romana',
+          event: 'Caída del Imperio Romano de Occidente',
+          description: 'Destitución de Rómulo Augústulo. Fin de la Antigüedad en Occidente.'
+        }
+      ].sort((a, b) => a.year - b.year);
 
       // Colores para cada civilización (Tailwind classes)
       const civilizationColors = {
         egipcia: 'bg-yellow-600',
         griega: 'bg-blue-600',
-        romana: 'bg-red-600',
-        iberica: 'bg-green-600'
+        romana: 'bg-red-600'
       };
 
-      // Filtrar según la civilización seleccionada
-      const filteredEvents = (selectedCivilization === 'all')
-        ? allEvents
-        : allEvents.filter(e => e.civilization === selectedCivilization);
-
-      // Si no hay eventos filtrados, devolvemos un simple mensaje
-      if (filteredEvents.length === 0) {
-        return (
-          <div className="bg-white p-4 text-center rounded shadow">
-            <h2 className="text-xl font-bold mb-4">No hay eventos para esta civilización</h2>
-            <button
-              className="px-4 py-2 bg-gray-800 text-white rounded"
-              onClick={() => setSelectedCivilization('all')}
-            >
-              Volver a mostrar todos
-            </button>
-          </div>
-        );
-      }
-
-      // Hallar año mínimo y máximo
-      const minYear = Math.min(...filteredEvents.map(e => e.year));
-      const maxYear = Math.max(...filteredEvents.map(e => e.year));
-
-      // Altura total (fija) para la parte "proporcional"
-      const containerHeight = 5000; // Ajusta a tu gusto (3000, 8000, etc.)
-
-      // Función para convertir un "year" a la posición vertical (px)
-      // relativo al minYear y maxYear
-      const getVerticalPosition = (year) => {
-        if (maxYear === minYear) return 0;
-        // ratio entre 0 y 1
-        const ratio = (year - minYear) / (maxYear - minYear);
-        return ratio * containerHeight;
-      };
+      // Filtra según la civilización seleccionada
+      const filteredEvents = selectedCivilization === 'all'
+        ? events
+        : events.filter(e => e.civilization === selectedCivilization);
 
       // Dar formato al año según si usamos BCE/CE o a.C./d.C.
       const formatYear = (year) => {
@@ -158,10 +242,8 @@
       };
 
       return (
-        <div className="bg-white p-4 shadow-md rounded relative">
-          <h2 className="text-3xl font-bold mb-6 text-center">
-            Línea Temporal de Civilizaciones (Proporcional)
-          </h2>
+        <div className="mx-auto p-4 bg-white shadow-md rounded">
+          <h2 className="text-3xl font-bold mb-6 text-center">Línea Temporal de Civilizaciones Antiguas</h2>
           
           {/* Botones de civilizaciones */}
           <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -201,15 +283,6 @@
             >
               Romana
             </button>
-            <button
-              className={`
-                px-4 py-2 rounded transition-colors duration-200
-                ${selectedCivilization === 'iberica' ? 'bg-green-600 text-white' : 'bg-green-200 hover:bg-green-300'}
-              `}
-              onClick={() => setSelectedCivilization('iberica')}
-            >
-              Ibérica
-            </button>
           </div>
 
           {/* Toggle BCE/CE */}
@@ -222,60 +295,24 @@
             />
           </div>
 
-          {/*
-            Contenedor principal para la línea temporal proporcional.
-            Usamos position: relative y una altura fija de X px.
-          */}
-          <div
-            className="relative mx-auto"
-            style={{ height: `${containerHeight}px`, width: '100%', maxWidth: '800px' }}
-          >
-            {/* 1) Pintar las "eras" en el fondo (z-index: 0) */}
-            {eras.map((era, idx) => {
-              // Calculamos posiciones top y bottom en la escala
-              const startPos = getVerticalPosition(Math.max(era.start, minYear));
-              const endPos = getVerticalPosition(Math.min(era.end, maxYear));
-              if (endPos < startPos) return null; // no se muestra si no solapa con el rango
+          {/* Línea Vertical */}
+          <div className="relative">
+            {/* Barra vertical */}
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-300"></div>
 
-              return (
-                <div
-                  key={idx}
-                  className={`absolute left-0 w-full ${era.color}`}
-                  style={{
-                    top: `${startPos}px`,
-                    height: `${endPos - startPos}px`,
-                    zIndex: 0,
-                    opacity: 0.4, // un poco de transparencia
-                  }}
-                  // Podrías mostrar el nombre del período en la franja si quieres
-                />
-              );
-            })}
-
-            {/* 2) Barra vertical (la línea en sí) en primer plano */}
-            <div
-              className="absolute left-8 w-1 bg-gray-600"
-              style={{ top: 0, bottom: 0, zIndex: 10 }}
-            ></div>
-
-            {/* 3) Eventos en posición absoluta sobre la línea */}
+            {/* Lista de eventos */}
             {filteredEvents.map((event, index) => {
               const isExpanded = expandedEventIndex === index;
-              const topPx = getVerticalPosition(event.year);
 
               return (
-                <div
-                  key={index}
-                  className="absolute group"
-                  style={{ left: '3rem', top: `${topPx}px`, zIndex: 20 }}
-                >
+                <div key={index} className="relative pl-24 pb-8 group">
                   {/* Punto en la línea */}
                   <div
                     className={`
-                      absolute -left-2 w-6 h-6 rounded-full shadow-lg
-                      ${civilizationColors[event.civilization] || 'bg-gray-400'}
+                      absolute left-6 w-6 h-6 rounded-full shadow-lg
+                      ${civilizationColors[event.civilization]}
                     `}
-                    style={{ top: '0.75rem' }}
+                    style={{ top: '1.5rem' }}
                   >
                     {/* Tooltip al pasar el ratón (nombre del evento) */}
                     <div className="invisible group-hover:visible absolute -top-8 -left-2 bg-black text-white text-sm py-1 px-2 rounded">
@@ -283,32 +320,36 @@
                     </div>
                   </div>
 
-                  {/* Caja de contenido */}
-                  <div className="bg-gray-50 p-4 pl-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    {/* Fecha (arriba en pequeño) */}
-                    <div className="text-sm font-medium text-gray-500 mb-1">
-                      {formatYear(event.year)}
-                    </div>
+                  {/* Fecha (a la izquierda) */}
+                  <div className="absolute left-0 top-4 text-sm font-medium w-20 text-right">
+                    {formatYear(event.year)}
+                  </div>
 
+                  {/* Caja de contenido */}
+                  <div className="bg-gray-50 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    {/* Encabezado con iconos (para expandir/contraer) */}
                     <div
                       className="flex justify-between items-center cursor-pointer"
                       onClick={() => toggleExpand(index)}
                     >
-                      <h3 className="font-bold text-lg mr-2">
-                        {event.event}
-                      </h3>
-                      {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
+                      <h3 className="font-bold text-xl">{event.event}</h3>
+                      {isExpanded ? (
+                        <FaChevronUp />
+                      ) : (
+                        <FaChevronDown />
+                      )}
                     </div>
 
+                    {/* Descripción expandida */}
                     {isExpanded && (
-                      <div className="mt-2">
+                      <div className="mt-3">
                         <p className="text-gray-700 text-base">
                           {event.description}
                         </p>
                         <span
                           className={`
                             inline-block px-3 py-1 rounded-full text-white text-sm mt-3
-                            ${civilizationColors[event.civilization] || 'bg-gray-400'}
+                            ${civilizationColors[event.civilization]}
                           `}
                         >
                           Civilización {event.civilization}
